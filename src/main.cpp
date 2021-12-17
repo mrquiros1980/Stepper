@@ -1,23 +1,26 @@
 #include <Arduino.h>
+#include <ESP8266WiFi.h>
+
+char ssid[] = "vodafoneDDE0";
+char pass[] = "2MQDXADZYQJZ3M";
 
 unsigned long startMicros; // some global variables available anywhere in the program
 unsigned long currentMicros;
 unsigned long period = 220707; // the value is a number of microseconds
-const byte ledPin = 13;        // using the built in LED
+const byte ledPin = 16;        // using the built in LED
 const int joy = A0;
-const byte ms1 = 3;
-const byte ms2 = 4;
-const byte ms3 = 5;
-byte direction = 8;
-const byte step = 9;
-const byte switchButton = 2;
-const byte joyButton = 1;
-const byte enable = 11;
+const byte ms1 = 2;
+const byte ms2 = 5;
+const byte ms3 = 4;
+const byte step = 14;
+const byte direction = 12;
+const byte enable = 13;
+const byte switchButton = 15;
+
 int speed = 475;
 volatile byte state = LOW;
 volatile byte track = LOW;
-int factor = 100;
-byte trackLed = 12;
+//byte trackLed = ;
 
 const int timeThreshold = 150;
 long startTime = 0;
@@ -28,7 +31,7 @@ void enableMotor()
     state = !state;
     track = !track;
     digitalWrite(enable, state);
-    digitalWrite(trackLed, track);
+//    digitalWrite(trackLed, track);
 }
 
 void moveStepper()
@@ -108,6 +111,9 @@ void moveStepper()
 };
 void setup()
 {
+    WiFi.mode(WIFI_STA);
+    WiFi.begin(ssid, pass);
+
     pinMode(ledPin, OUTPUT);
     pinMode(ms1, OUTPUT);
     pinMode(ms2, OUTPUT);
@@ -117,7 +123,7 @@ void setup()
     pinMode(joy, INPUT);
     pinMode(enable, OUTPUT);
     pinMode(switchButton, INPUT_PULLUP);
-    pinMode(trackLed, OUTPUT);
+    //pinMode(trackLed, OUTPUT);
     attachInterrupt(digitalPinToInterrupt(switchButton), enableMotor, LOW);
 
     startMicros = micros(); // initial start time
@@ -130,7 +136,7 @@ void setup()
     digitalWrite(direction, LOW);
     digitalWrite(step, HIGH);
     digitalWrite(enable, HIGH);
-    digitalWrite(trackLed, LOW);
+    //digitalWrite(trackLed, LOW);
     state = HIGH;
     track = LOW;
 }
@@ -153,7 +159,7 @@ void loop()
         else
         {
             digitalWrite(enable, HIGH);
-            digitalWrite(ledPin, LOW);
+            //digitalWrite(ledPin, LOW);
         }
     }
 }
