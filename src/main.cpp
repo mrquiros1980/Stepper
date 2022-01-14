@@ -15,6 +15,7 @@ const byte step = D6;
 const byte direction = D7;
 const byte enable = D8;
 const byte switchButton = 3;
+const byte ledPin = 16;
 
 int speed = 475;
 volatile byte state = LOW;
@@ -100,6 +101,7 @@ void moveStepper()
 
     if (currentMicros - startMicros >= period) // test whether the period has elapsed
     {
+        digitalWrite(ledPin, !digitalRead(ledPin)); // if so, change the state of the LED.  Uses a neat trick to change the state
         digitalWrite(step, !digitalRead(step));
         startMicros = currentMicros; // IMPORTANT to save the start time of the current LED state.
     }
@@ -114,10 +116,11 @@ void setup()
     pinMode(ms3, OUTPUT);
     pinMode(direction, OUTPUT);
     pinMode(step, OUTPUT);
+    pinMode(ledPin, OUTPUT);
     pinMode(joy, INPUT);
     pinMode(enable, OUTPUT);
-    pinMode(switchButton, INPUT_PULLUP);
-    attachInterrupt(digitalPinToInterrupt(switchButton), enableMotor, LOW);
+    pinMode(switchButton, INPUT);
+    //attachInterrupt(digitalPinToInterrupt(switchButton), enableMotor, RISING);
 
     startMicros = micros(); // initial start time
 
@@ -129,15 +132,17 @@ void setup()
     digitalWrite(direction, LOW);
     digitalWrite(step, HIGH);
     digitalWrite(enable, HIGH);
+    digitalWrite(ledPin, HIGH);
     // digitalWrite(trackLed, LOW);
     state = HIGH;
     track = LOW;
+    Serial.begin(9600);
 }
 
 void loop()
 {
     currentMicros = micros(); // get the current "time" (actually the number of microseconds since the program started)
-
+    Serial.println(digitalRead(switchButton));
     if (state == LOW)
     {
         moveStepper();
