@@ -16,19 +16,15 @@ const byte enable = 11;
 int speed = 475;
 volatile byte state = LOW;
 volatile byte track = LOW;
-int factor = 100;
-byte trackLed = 12;
 
 const int timeThreshold = 150;
 long startTime = 0;
 
 void enableMotor()
 {
-
     state = !state;
     track = !track;
     digitalWrite(enable, state);
-    digitalWrite(trackLed, track);
 }
 
 void moveStepper()
@@ -117,7 +113,7 @@ void setup()
     pinMode(joy, INPUT);
     pinMode(enable, OUTPUT);
     pinMode(switchButton, INPUT_PULLUP);
-    pinMode(trackLed, OUTPUT);
+    // pinMode(trackLed, OUTPUT);
     attachInterrupt(digitalPinToInterrupt(switchButton), enableMotor, LOW);
 
     startMicros = micros(); // initial start time
@@ -130,7 +126,7 @@ void setup()
     digitalWrite(direction, HIGH);
     digitalWrite(step, HIGH);
     digitalWrite(enable, HIGH);
-    digitalWrite(trackLed, LOW);
+    // digitalWrite(trackLed, LOW);
     state = HIGH;
     track = LOW;
 }
@@ -153,7 +149,7 @@ void loop()
         else
         {
             digitalWrite(enable, HIGH);
-            digitalWrite(ledPin, LOW);
+            // digitalWrite(ledPin, LOW);
         }
     }
 }
