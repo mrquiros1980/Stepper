@@ -24,6 +24,8 @@ volatile byte track = LOW;
 const int timeThreshold = 150;
 long startTime = 0;
 
+//void IRAM_ATTR enableMotor();
+
 void enableMotor()
 {
     state = !state;
@@ -119,8 +121,8 @@ void setup()
     pinMode(ledPin, OUTPUT);
     pinMode(joy, INPUT);
     pinMode(enable, OUTPUT);
-    pinMode(switchButton, INPUT);
-    //attachInterrupt(digitalPinToInterrupt(switchButton), enableMotor, RISING);
+    pinMode(switchButton, INPUT_PULLUP);
+    attachInterrupt(digitalPinToInterrupt(switchButton), enableMotor, FALLING);
 
     startMicros = micros(); // initial start time
 
@@ -133,16 +135,14 @@ void setup()
     digitalWrite(step, HIGH);
     digitalWrite(enable, HIGH);
     digitalWrite(ledPin, HIGH);
-    // digitalWrite(trackLed, LOW);
     state = HIGH;
     track = LOW;
-    Serial.begin(9600);
 }
 
 void loop()
 {
     currentMicros = micros(); // get the current "time" (actually the number of microseconds since the program started)
-    Serial.println(digitalRead(switchButton));
+    
     if (state == LOW)
     {
         moveStepper();
@@ -157,6 +157,7 @@ void loop()
         else
         {
             digitalWrite(enable, HIGH);
+            digitalWrite(ledPin,HIGH);
         }
     }
 }
