@@ -1,23 +1,29 @@
 #include <Arduino.h>
 
-unsigned long startMicros; // some global variables available anywhere in the program
+unsigned long startMicros; 
 unsigned long currentMicros;
 unsigned long period = 220707; // the value is a number of microseconds
 const byte ledPin = 13;        // using the built in LED
-const int joy = A0;
+
+
+// A4998 Stepper Driver Pins
 const byte ms1 = 3;
 const byte ms2 = 4;
 const byte ms3 = 5;
 byte direction = 8;
 const byte step = 9;
+const byte enable = 11;
+
+// Joystick Module Pins
 const byte switchButton = 2;
 const byte joyButton = 1;
-const byte enable = 11;
-int speed = 475;
-volatile byte state = LOW;
-volatile byte track = LOW;
+const int joy = A0;
 
-const int timeThreshold = 150;
+int speed = 475;
+volatile byte state = LOW; //Set the motor driver "enable" pin value
+volatile byte track = LOW; // Variable to enable/disable AR Tracking
+
+const int timeThreshold = 150; // For debouncing (needs some work to fine tuning it)
 long startTime = 0;
 
 void enableMotor()
@@ -95,11 +101,11 @@ void moveStepper()
         digitalWrite(direction, HIGH);
     }
 
-    if (currentMicros - startMicros >= period) // test whether the period has elapsed
+    if (currentMicros - startMicros >= period)
     {
-        digitalWrite(ledPin, !digitalRead(ledPin)); // if so, change the state of the LED.  Uses a neat trick to change the state
+        digitalWrite(ledPin, !digitalRead(ledPin)); 
         digitalWrite(step, !digitalRead(step));
-        startMicros = currentMicros; // IMPORTANT to save the start time of the current LED state.
+        startMicros = currentMicros; 
     }
 };
 void setup()
@@ -113,8 +119,7 @@ void setup()
     pinMode(joy, INPUT);
     pinMode(enable, OUTPUT);
     pinMode(switchButton, INPUT_PULLUP);
-    // pinMode(trackLed, OUTPUT);
-    attachInterrupt(digitalPinToInterrupt(switchButton), enableMotor, LOW);
+    attachInterrupt(digitalPinToInterrupt(switchButton), enableMotor, LOW); // Interrupt to monitor the track enable switch triggering
 
     startMicros = micros(); // initial start time
 
@@ -126,7 +131,7 @@ void setup()
     digitalWrite(direction, HIGH);
     digitalWrite(step, HIGH);
     digitalWrite(enable, HIGH);
-    // digitalWrite(trackLed, LOW);
+    
     state = HIGH;
     track = LOW;
 }
@@ -149,7 +154,6 @@ void loop()
         else
         {
             digitalWrite(enable, HIGH);
-            // digitalWrite(ledPin, LOW);
         }
     }
 }
