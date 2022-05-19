@@ -18,13 +18,6 @@ const byte enable = 11;
 const byte switchButton = 2;
 const int joy = A0;
 
-const byte ms1 = D1;
-const byte ms2 = D2;
-const byte ms3 = D5;
-const byte step = D6;
-const byte direction = D7;
-const byte enable = D8;
-const byte switchButton = 3;
 const byte ledPin = 16;        // using the built in LED
 
 
