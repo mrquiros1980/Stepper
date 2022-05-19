@@ -16,7 +16,6 @@ const byte enable = 11;
 
 // Joystick Module Pins
 const byte switchButton = 2;
-const byte joyButton = 1;
 const int joy = A0;
 
 int speed = 475;
