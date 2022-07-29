@@ -2,7 +2,7 @@
 
 unsigned long startMicros; 
 unsigned long currentMicros;
-unsigned long period = 220707; // the value is a number of microseconds
+unsigned long period = 55177; // the value is a number of microseconds
 const byte ledPin = 13;        // using the built in LED
 
 
@@ -48,7 +48,7 @@ void moveStepper()
         digitalWrite(ms3, LOW);
     }
     digitalWrite(direction, HIGH);
-    period = 110354;
+    period = 27588;
 
     if (speed <= 400 && speed >= 200)
     {
