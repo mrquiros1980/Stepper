@@ -10,9 +10,9 @@ const byte ledPin = 13;        // using the built in LED
 const byte ms1 = 8;
 const byte ms2 = 7;
 const byte ms3 = 6;
-byte direction = 8;
+byte direction = 2;
 const byte step = 3;
-const byte enable = 2;
+const byte enable = 9;
 
 // Joystick Module Pins
 const byte switchButton = 12;
@@ -80,7 +80,7 @@ void setup()
     digitalWrite(step, HIGH);
     digitalWrite(enable, HIGH);
     
-    track = HIGH;
+    track = LOW;
 }
 
 void loop()
