@@ -78,7 +78,7 @@ void setup()
 
     digitalWrite(direction, HIGH);
     digitalWrite(step, HIGH);
-    //digitalWrite(enable, HIGH);
+    digitalWrite(enable, HIGH);
     
     track = false;
 }
