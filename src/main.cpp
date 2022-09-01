@@ -2,7 +2,7 @@
 
 unsigned long startMicros; 
 unsigned long currentMicros;
-unsigned long period = 55117; // the value is a number of microseconds
+unsigned long period = 27588; // the value is a number of microseconds
 const byte ledPin = 13;        // using the built in LED
 
 
@@ -28,13 +28,12 @@ void enableMotor()
 {
     digitalWrite(enable, track);
     track = !track;
-    
 }
 
 void moveStepper()
 {
     speed = analogRead(joy);
-    period = 55117;
+    period = 27588;
     digitalWrite(direction, HIGH);
 
     if (speed < 200)
@@ -55,6 +54,7 @@ void moveStepper()
         digitalWrite(step, !digitalRead(step));
         startMicros = currentMicros; 
     }
+    if(!track) digitalWrite(ledPin,LOW);
 };
 void setup()
 {
@@ -67,14 +67,14 @@ void setup()
     pinMode(joy, INPUT);
     pinMode(enable, OUTPUT);
     pinMode(switchButton, INPUT_PULLUP);
-    attachInterrupt(digitalPinToInterrupt(switchButton), enableMotor, LOW); // Interrupt to monitor the track enable switch triggering
+    attachInterrupt(digitalPinToInterrupt(switchButton), enableMotor, HIGH); // Interrupt to monitor the track enable switch triggering
 
     startMicros = micros(); // initial start time
 
-    digitalWrite(enable, LOW);
+    //digitalWrite(enable, LOW);
     digitalWrite(ms1, HIGH);
     digitalWrite(ms2, HIGH);
-    digitalWrite(ms3, LOW);
+    digitalWrite(ms3, HIGH);
 
     digitalWrite(direction, HIGH);
     digitalWrite(step, HIGH);
@@ -87,4 +87,5 @@ void loop()
 {
     currentMicros = micros(); // get the current "time" (actually the number of microseconds since the program started)
     moveStepper();
+    
 }
